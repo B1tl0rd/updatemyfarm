@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+# Title      : updatemyfarm.bash
+# Description: Update multiple Debian/CentOS servers using SSH and sudo
+# Author     : linuxitux
+# Date       : 11-12-2012
+# Usage      : ./updatemyfarm.bash
+# Notes      : Read the documentation first
 
 # Configuration files
 CONF="updatemyfarm.conf"
@@ -33,7 +39,7 @@ COUNT=0
 
 # CONF - username:host:port:os
 
-for SERVER in $(cat $CONF)
+for SERVER in $(cat $CONF | grep -v "^#")
 do
     # Parse each configuration line
     USER=$(echo $SERVER | cut -d ':' -f1)
@@ -80,7 +86,7 @@ done
 
 echo ""
 
-for SERVER in $(cat $CONF)
+for SERVER in $(cat $CONF | grep -v "^#")
 do
     # Parse each configuration line
     USER=$(echo $SERVER | cut -d ':' -f1)
