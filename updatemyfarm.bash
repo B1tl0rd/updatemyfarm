@@ -208,7 +208,7 @@ done
 tput cuu1 # Up 1 line
 tput el   # Delete characters to the end of the line
 
-echo "Finalizado."
+echo "Process completed."
 
 # Verify return codes
 ERRORS=0
