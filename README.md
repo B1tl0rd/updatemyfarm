@@ -17,7 +17,7 @@ This scripts works only on Debian and CentOS based systems (it supports only APT
 ## INSTALLATION
 The installation procedure for this script is very easy, but involves a lot of handwork on target servers.
 
-### CONFIGURATION ON MANAGEMENT SERVER
+### MANAGEMENT SERVER CONFIGURATION
 On the management system (the one where the script will run) you need to create the unprivileged account to remotely connect to the target servers using public key authentication. For example, create the user "updateusr":
 ```
 root@adminsrv:~# useradd -d /home/updateusr -m -s /bin/bash updateusr
