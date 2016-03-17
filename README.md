@@ -34,7 +34,7 @@ updateusr@adminsrv:~$ cd updatemyfarm/
 updateusr@adminsrv:~/updatemyfarm$ nano updatemyfarm.conf
 ```
 The syntax has the format ```USER:HOST:PORT:OS```. Comments starting with ```#``` are allowed, but not empty lines. Remember OS can be only ```debian``` or ```centos```.
-The final step is to generate a pair of public keys for SSH authentication:
+The final step is to generate a pair of keys for SSH authentication:
 ```
 updateusr@adminsrv:~/updatemyfarm$ cd
 updateusr@adminsrv:~$ ssh-keygen -t dsa
@@ -57,7 +57,7 @@ updateusr@targetsrv:~$ touch .ssh/authorized_keys
 updateusr@targetsrv:~$ chmod 644 .ssh/authorized_key
 updateusr@targetsrv:~$ exit
 ```
-Verify that public key authentication it's enabled on the SSH service:
+Verify that public key authentication it's enabled in SSH:
 ```
 root@targetsrv:~# nano /etc/ssh/sshd_config
 ```
@@ -67,12 +67,13 @@ PubkeyAuthentication yes
 AuthorizedKeysFile .ssh/authorized_keys
 ```
 Then, restart the SSH deamon (```service ssh restart``` on Debian, ```service sshd restart``` on CentOS).
-The last step related to SSH and public key aythentication, consists in installing the public key of "updateusr@adminsrv" to allow passwordless access to this server as "updateusr@targetsrv".
+
+The last step related to SSH and public key aythentication, consists on install the public key of "updateusr@adminsrv" to allow passwordless access to this server as "updateusr@targetsrv".
 From each target server, logged as "updateusr", run this command:
 ```
 updateusr@targetsrv:~$ ssh -p 2022 updateusr@adminsrv "cat .ssh/id_dsa.pub" >> .ssh/authorized_keys
 ```
-For this, you need to know updateusr's password on adminsrv.
+For this, you need to know updateusr's password on adminsrv (it was set up earlier on management server configuration).
 After this steps, "updateusr@adminsrv" will be able to login on any target server as "updateusr" without password. 
 #### RESTRICTIVE SUDO FOR UPDATEUSR
 TODO
