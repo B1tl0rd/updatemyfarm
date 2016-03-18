@@ -23,6 +23,7 @@ On the management system (the one where the script will run) you need to create 
 root@adminsrv:~# useradd -d /home/updateusr -m -s /bin/bash updateusr
 root@adminsrv:~# passwd updateusr
 ```
+Remember this password. You'll need it later.
 Then, download a copy of the script:
 ```
 root@adminsrv:~# su - updateusr
@@ -68,13 +69,13 @@ AuthorizedKeysFile .ssh/authorized_keys
 ```
 Then, restart the SSH deamon (```service ssh restart``` on Debian, ```service sshd restart``` on CentOS).
 
-The last step related to SSH and public key aythentication, consists on install the public key of "updateusr@adminsrv" to allow passwordless access to this server as "updateusr@targetsrv".
+The last step related to SSH and public key aythentication, consists in install the public key of "updateusr@adminsrv" to allow passwordless access to this server as "updateusr@targetsrv".
 From each target server, logged as "updateusr", run this command:
 ```
 updateusr@targetsrv:~$ ssh -p 2022 updateusr@adminsrv "cat .ssh/id_dsa.pub" >> .ssh/authorized_keys
 ```
 For this, you need to know updateusr's password on adminsrv (it was set up earlier on management server configuration).
-After this steps, "updateusr@adminsrv" will be able to login on any target server as "updateusr" without password. 
+After this steps, "updateusr@adminsrv" will be able to login on any target server as "updateusr" without a password.
 #### RESTRICTIVE SUDO FOR UPDATEUSR
 TODO
 
