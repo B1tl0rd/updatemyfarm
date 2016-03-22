@@ -77,5 +77,70 @@ updateusr@targetsrv:~$ ssh -p 2022 updateusr@adminsrv "cat .ssh/id_dsa.pub" >> .
 For this, you need to know updateusr's password on adminsrv (it was set up earlier on management server configuration).
 After this steps, "updateusr@adminsrv" will be able to login on any target server as "updateusr" without a password.
 #### RESTRICTIVE SUDO FOR UPDATEUSR
-TODO
+After setting up public key authentication for SSH, "updateusr" will be available to open a shell on each target server. But it will need superuser (root) privileges to update the operating system. So the next step consist in install and configure sudo with restrictive rules. Meaning "updateusr" will not be able to run any command as root, only specific package manager related commands.
+Install sudo, on Debian:
+```
+# apt-get install sudo
+```
+On CentOS:
+```
+# yum install sudo
+```
+Sudo rules are configured under ```/etc/sudoers.d/```:
+```
+root@targetsrv:~# cd /etc/sudoers.d/
+root@targetsrv:/etc/sudoers.d/# nano updatemyfarm
+```
+On Debian-based distributions, add this content:
+```
+# Server
+Host_Alias SERVER = localhost, targetsrv.linuxito.com, targetsrv
 
+# User
+User_Alias UPDATEUSR = updateusr
+
+# Commands to update
+Cmnd_Alias CMD_APT_UPDATE = /usr/bin/apt-get update
+Cmnd_Alias CMD_APT_UPGRADE = /usr/bin/apt-get upgrade
+Cmnd_Alias CMD_APT_CLEAN = /usr/bin/apt-get clean
+Cmnd_Alias CMD_APT_SUPGRADE = /usr/bin/apt-get -s upgrade
+Cmnd_Alias CMD_APT_SQYUPGRADE = /usr/bin/apt-get -s -q -y upgrade
+Cmnd_Alias CMD_APT_QYUPGRADE = /usr/bin/apt-get -q -y upgrade
+Cmnd_Alias CMD_APT_SQYCLEAN = /usr/bin/apt-get -s -q -y clean
+Cmnd_Alias CMD_APT_QYCLEAN = /usr/bin/apt-get -q -y clean
+
+# Rules
+UPDATEUSR SERVER = NOPASSWD:CMD_APT_UPDATE
+UPDATEUSR SERVER = NOPASSWD:CMD_APT_UPGRADE
+UPDATEUSR SERVER = NOPASSWD:CMD_APT_CLEAN
+UPDATEUSR SERVER = NOPASSWD:CMD_APT_SUPGRADE
+UPDATEUSR SERVER = NOPASSWD:CMD_APT_SQYUPGRADE
+UPDATEUSR SERVER = NOPASSWD:CMD_APT_QYUPGRADE
+UPDATEUSR SERVER = NOPASSWD:CMD_APT_SQYCLEAN
+UPDATEUSR SERVER = NOPASSWD:CMD_APT_QYCLEAN
+```
+On CentOS-based distributions, add this content instead:
+```
+# Server
+Host_Alias SERVER = localhost, targetsrv.linuxito.com, targetsrv
+
+# User
+User_Alias UPDATEUSR = updateusr
+
+# Commands to update
+Cmnd_Alias CMD_YUM_UPDATE = /usr/bin/yum update
+Cmnd_Alias CMD_YUM_CLEAN_ALL = /usr/bin/yum clean all
+Cmnd_Alias CMD_YUM_CHECKU = /usr/bin/yum check-update
+Cmnd_Alias CMD_YUM_YUPDATE = /usr/bin/yum -y update
+
+# Rules
+UPDATEUSR SERVER = NOPASSWD:CMD_YUM_UPDATE
+UPDATEUSR SERVER = NOPASSWD:CMD_YUM_CLEAN_ALL
+UPDATEUSR SERVER = NOPASSWD:CMD_YUM_CHECKU
+UPDATEUSR SERVER = NOPASSWD:CMD_YUM_YUPDATE
+```
+Finally, change file permissions:
+```
+root@targetsrv:/etc/sudoers.d/# chmod 440 updatemyfarm
+```
+Repeat this steps across all our servers. It's a lot of hand-work, but it's needed only the first time, and this script will save you plenty of time in future updates. Plus, each time you clone a server, all this work it's done already.
