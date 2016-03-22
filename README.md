@@ -78,6 +78,7 @@ For this, you need to know updateusr's password on adminsrv (it was set up earli
 After this steps, "updateusr@adminsrv" will be able to login on any target server as "updateusr" without a password.
 #### RESTRICTIVE SUDO FOR UPDATEUSR
 After setting up public key authentication for SSH, "updateusr" will be available to open a shell on each target server. But it will need superuser (root) privileges to update the operating system. So the next step consist in install and configure sudo with restrictive rules. Meaning "updateusr" will not be able to run any command as root, only specific package manager related commands.
+
 Install sudo, on Debian:
 ```
 # apt-get install sudo
