@@ -153,7 +153,7 @@ This script checks for updates across al servers in $CONF and sends a single e-m
 It uses the same configuration file, user and permissions settings of updatemyfarm.bash.
 
 You need to add this line to updateusr's crontab:
-
- 0 2 * * * /home/updateusr/updatemyfarm/checkmyfarm.bash
-
+```
+0 2 * * * /home/updateusr/updatemyfarm/checkmyfarm.bash
+```
 This way it will run everyday at 2:00 AM.
