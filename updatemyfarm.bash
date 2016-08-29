@@ -41,7 +41,7 @@ COUNT=0
 
 for SERVER in $(cat $CONF | grep -v "^#")
 do
-    # Parse each configuration line
+    # Parse configuration line
     USER=$(echo $SERVER | cut -d ':' -f1)
     HOST=$(echo $SERVER | cut -d ':' -f2)
     PORT=$(echo $SERVER | cut -d ':' -f3)
