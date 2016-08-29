@@ -5,6 +5,7 @@
 # Date       : 29-08-2016
 # Usage      : ./checkmyfarm.bash
 # Notes      : Read the documentation first
+#0 2 * * * /home/sysadmin/updatemyfarm/checkmyfarm.bash
 
 # Configuration files
 CONF="updatemyfarm.conf"

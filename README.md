@@ -145,3 +145,15 @@ Finally, change file permissions:
 root@targetsrv:/etc/sudoers.d/# chmod 440 updatemyfarm
 ```
 Repeat this steps across all our servers. It's a lot of hand-work, but it's needed only the first time, and this script will save you plenty of time in future updates. Plus, each time you clone a server, all this work it's done already.
+
+# checkmyfarm
+
+This script checks for updates across al servers in $CONF and sends a single e-mail to $MAILTO.
+
+It uses the same configuration file, user and permissions settings of updatemyfarm.bash.
+
+You need to add this line to updateusr's crontab:
+
+ 0 2 * * * /home/updateusr/updatemyfarm/checkmyfarm.bash
+
+This way it will run everyday at 2:00 AM.
