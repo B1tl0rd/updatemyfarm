@@ -8,8 +8,10 @@
 #0 2 * * * /home/sysadmin/updatemyfarm/checkmyfarm.bash
 
 # Configuration files
-CONF="updatemyfarm.conf"
-LOGDIR="log"
+BASEDIR="/home/updateusr/updatemyfarm"
+CONF="$BASEDIR/updatemyfarm.conf"
+LOGDIR="$BASEDIR/log"
+#LOGDIR="/var/log/updatemyfarm"
 
 # Get time and date
 DATETIME=$(date +%Y-%m-%d_%H-%M-%S)
@@ -72,7 +74,7 @@ do
           if [ $COUNT -gt 0 ] ; then
               ((AVAILABLE++))
               echo "$HOST - $VERSION:" >> $LOGFILE
-              echo "$UPDATES" | grep -v ENDUPDT | grep -v 'Loaded plugins' | grep -v 'Loading mirror' | grep -v '*' | grep -v -e '^$' >> $LOGFILE
+              echo "$UPDATES" | grep -v ENDUPDT | grep -v 'Loaded plugins' | grep -v 'Loading mirror' | grep -v '*' | grep -v '|' | grep -v -e '^$' >> $LOGFILE
               echo >> $LOGFILE
               echo >> $LOGFILE
           fi
