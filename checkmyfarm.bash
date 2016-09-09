@@ -54,10 +54,9 @@ do
     # Check for updates
     case $OS in
       "debian")
-          UPDATES=$(ssh -p $PORT $USER@$HOST $CMD_DEBIAN | grep -v '\.\.\.' | grep -v ':' )
+          UPDATES=$(ssh -p $PORT $USER@$HOST $CMD_DEBIAN | grep 'Inst' | sed -e 's/Inst //')
           VERSION=$(ssh -p $PORT $USER@$HOST $V_DEBIAN)
-          COUNT=$(echo "$UPDATES" | grep "upgraded" | cut -d ' ' -f 1)
-          UPDATES=$(echo "$UPDATES" | grep -v upgraded)
+          COUNT=$(echo -n "$UPDATES" | wc -m)
           if [ $COUNT -gt 0 ] ; then
               ((AVAILABLE++))
               echo "$HOST - $VERSION:" >> $LOGFILE
